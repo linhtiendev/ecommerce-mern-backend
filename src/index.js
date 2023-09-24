@@ -10,11 +10,9 @@ app.get("/", (req, res) => {
     res.send("Hello world");
 });
 
-// connect MongoDB
+// connect to MongoDB
 mongoose
-    .connect(
-        `mongodb+srv://litimini:${process.env.MONGO_DB}@cluster0.byegi3e.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`
-    )
+    .connect(`${process.env.MONGO_DB}`)
     // promise
     .then(() => {
         console.log("Connect DB success!");
