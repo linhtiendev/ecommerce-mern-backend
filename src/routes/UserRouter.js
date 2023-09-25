@@ -4,6 +4,7 @@ const userController = require("../controllers/UserController");
 
 // gọi đến controller
 // method tạo
-router.post("/", userController.createUser);
+router.post("/sign-up", userController.createUser);
+router.post("/sign-in", userController.loginUser);
 
 module.exports = router;
