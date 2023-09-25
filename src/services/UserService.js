@@ -3,6 +3,8 @@
 const User = require("../models/UserModel");
 const bcrypt = require("bcrypt");
 
+const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
+
 // Hàm tạo user
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
@@ -66,11 +68,25 @@ const loginUser = (userLogin) => {
                     message: "Password or user is incorrect",
                 });
             }
+            // sau khi login thành công
+            // cấp access token khi đăng nhập
+            // truyền payload
+            const access_token = await genneralAccessToken({
+                id: checkUser.id,
+                isAdmin: checkUser.isAdmin,
+            });
+            // cấp lại access_token mới khi access_token hết hạn
+            const refresh_token = await genneralRefreshToken({
+                id: checkUser.id,
+                isAdmin: checkUser.isAdmin,
+            });
             // k có case lỗi sẽ trả ra user vừa login
             resolve({
                 status: "OK",
                 message: "SUCCESS",
-                data: checkUser,
+                // data: checkUser, // trả về access_token thay vì user để bảo mật
+                access_token,
+                refresh_token,
             });
         } catch (e) {
             reject(e);
