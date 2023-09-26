@@ -94,7 +94,37 @@ const loginUser = (userLogin) => {
     });
 };
 
+// Hàm check update user
+const updateUser = (id, data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkUser = await User.findOne({
+                _id: id,
+            });
+            if (checkUser === null) {
+                resolve({
+                    status: "OK",
+                    message: "User is not defined",
+                });
+            }
+            // Hàm update user
+            const updatedUser = await User.findByIdAndUpdate(id, data, {
+                // khởi tạo dl mới khi cập nhật thành công
+                new: true,
+            });
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: updatedUser,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     createUser,
     loginUser,
+    updateUser,
 };
