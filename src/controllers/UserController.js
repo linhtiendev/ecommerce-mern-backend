@@ -110,9 +110,22 @@ const deleteUser = async (req, res) => {
     }
 };
 
+// Hàm xử lý trước khi lấy tất cả user
+const getAllUser = async (req, res) => {
+    try {
+        const response = await UserService.getAllUser();
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+};
+
 module.exports = {
     createUser,
     loginUser,
     updateUser,
     deleteUser,
+    getAllUser,
 };

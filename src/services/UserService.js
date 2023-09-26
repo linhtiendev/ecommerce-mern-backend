@@ -148,9 +148,27 @@ const deleteUser = (id) => {
     });
 };
 
+// Hàm check get all user
+const getAllUser = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Hàm get all user
+            const getAllUsers = await User.find();
+            resolve({
+                status: "OK",
+                message: "Get all user success",
+                data: getAllUsers,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     createUser,
     loginUser,
     updateUser,
     deleteUser,
+    getAllUser,
 };
