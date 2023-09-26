@@ -122,10 +122,31 @@ const getAllUser = async (req, res) => {
     }
 };
 
+// Hàm xử lý trước khi lấy thông tin user
+const getDetailUser = async (req, res) => {
+    try {
+        // hàm lấy id từ req
+        const userId = req.params.id;
+        if (!userId) {
+            return res.status(200).json({
+                status: "error",
+                message: "User id is required",
+            });
+        }
+        const response = await UserService.getDetailUser(userId);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+};
+
 module.exports = {
     createUser,
     loginUser,
     updateUser,
     deleteUser,
     getAllUser,
+    getDetailUser,
 };
