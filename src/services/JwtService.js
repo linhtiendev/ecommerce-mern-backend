@@ -1,4 +1,6 @@
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
+dotenv.config();
 
 // Hàm tạo token
 const genneralAccessToken = async (payload) => {
@@ -7,7 +9,7 @@ const genneralAccessToken = async (payload) => {
             payload,
         },
         // secret key
-        "access_token",
+        process.env.ACCESS_TOKEN,
         // token tồn tại trong 1h
         { expiresIn: "1h" }
     );
@@ -21,7 +23,7 @@ const genneralRefreshToken = async (payload) => {
             payload,
         },
         // secret key
-        "refresh_token",
+        process.env.REFRESH_TOKEN,
         // token tồn tại trong 356 ngày
         { expiresIn: "365d" }
     );
