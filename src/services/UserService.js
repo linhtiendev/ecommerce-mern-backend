@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 
 const { genneralAccessToken, genneralRefreshToken } = require("./JwtService");
 
-// Hàm tạo user
+// Hàm check tạo user
 const createUser = (newUser) => {
     return new Promise(async (resolve, reject) => {
         const { name, email, password, phone } = newUser;
@@ -114,8 +114,33 @@ const updateUser = (id, data) => {
             });
             resolve({
                 status: "OK",
-                message: "SUCCESS",
+                message: "Update user success",
                 data: updatedUser,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+// Hàm check delete user
+const deleteUser = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkUser = await User.findOne({
+                _id: id,
+            });
+            if (checkUser === null) {
+                resolve({
+                    status: "OK",
+                    message: "User is not defined",
+                });
+            }
+            // Hàm delete user
+            await User.findByIdAndDelete(id);
+            resolve({
+                status: "OK",
+                message: "Delete user success",
             });
         } catch (e) {
             reject(e);
@@ -127,4 +152,5 @@ module.exports = {
     createUser,
     loginUser,
     updateUser,
+    deleteUser,
 };

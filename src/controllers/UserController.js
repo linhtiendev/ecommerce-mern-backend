@@ -90,8 +90,29 @@ const updateUser = async (req, res) => {
     }
 };
 
+// Hàm xử lý trước khi xóa user
+const deleteUser = async (req, res) => {
+    try {
+        // hàm lấy id từ req
+        const userId = req.params.id;
+        if (!userId) {
+            return res.status(200).json({
+                status: "error",
+                message: "User id is required",
+            });
+        }
+        const response = await UserService.deleteUser(userId);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+};
+
 module.exports = {
     createUser,
     loginUser,
     updateUser,
+    deleteUser,
 };
