@@ -44,7 +44,28 @@ const updateProduct = async (req, res) => {
     }
 };
 
+// hàm xử lý get detail product
+const getDetailProduct = async (req, res) => {
+    try {
+        // hàm lấy id từ req
+        const productId = req.params.id;
+        if (!productId) {
+            return res.status(200).json({
+                status: "error",
+                message: "Product id is required",
+            });
+        }
+        const response = await ProductService.getDetailProduct(productId);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+};
+
 module.exports = {
     createProduct,
     updateProduct,
+    getDetailProduct,
 };

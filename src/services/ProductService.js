@@ -69,7 +69,32 @@ const updateProduct = (id, data) => {
     });
 };
 
+// Hàm check get detail product
+const getDetailProduct = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const product = await Product.findOne({
+                _id: id,
+            });
+            if (product === null) {
+                resolve({
+                    status: "OK",
+                    message: "Product is not defined",
+                });
+            }
+            resolve({
+                status: "OK",
+                message: "SUCCESS",
+                data: product,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     createProduct,
     updateProduct,
+    getDetailProduct,
 };
