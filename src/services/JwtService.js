@@ -10,8 +10,8 @@ const genneralAccessToken = async (payload) => {
         },
         // secret key
         process.env.ACCESS_TOKEN,
-        // token tồn tại trong 1h
-        { expiresIn: "1h" }
+        // token tồn tại trong 30s
+        { expiresIn: "30s" }
     );
     return access_token;
 };
@@ -30,7 +30,37 @@ const genneralRefreshToken = async (payload) => {
     return refresh_token;
 };
 
+// Hàm cấp lại token mới khi token hết hạn
+const refreshTokenJwtService = (token) => {
+    return new Promise((resolve, reject) => {
+        try {
+            jwt.verify(token, process.env.REFRESH_TOKEN, async (err, user) => {
+                if (err) {
+                    resolve({
+                        status: "ERROR",
+                        message: "The Authentication",
+                    });
+                }
+                // hàm lấy thông tin user từ payload
+                const { payload } = user;
+                const access_token = await genneralAccessToken({
+                    id: payload?.id,
+                    isAdmin: payload?.isAdmin,
+                });
+                resolve({
+                    status: "OK",
+                    message: "SUCCESS",
+                    access_token,
+                });
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     genneralAccessToken,
     genneralRefreshToken,
+    refreshTokenJwtService,
 };

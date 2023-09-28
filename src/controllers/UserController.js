@@ -1,4 +1,5 @@
 const UserService = require("../services/UserService");
+const JwtService = require("../services/JwtService");
 
 // hàm xử lý method tạo
 const createUser = async (req, res) => {
@@ -142,6 +143,26 @@ const getDetailUser = async (req, res) => {
     }
 };
 
+// hàm xử lí khi lấy token từ headers
+const refreshToken = async (req, res) => {
+    try {
+        // hàm lấy token từ headers
+        const token = req.headers.token.split(" ")[1];
+        if (!token) {
+            return res.status(200).json({
+                status: "error",
+                message: "Token id is required",
+            });
+        }
+        const response = await JwtService.refreshTokenJwtService(token);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+};
+
 module.exports = {
     createUser,
     loginUser,
@@ -149,4 +170,5 @@ module.exports = {
     deleteUser,
     getAllUser,
     getDetailUser,
+    refreshToken,
 };

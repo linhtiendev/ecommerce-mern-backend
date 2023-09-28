@@ -17,5 +17,7 @@ router.get(
     authUserMiddleware,
     userController.getDetailUser
 );
+// tạo access_token mới khi access_token hết hạn
+router.post("/refresh-token", userController.refreshToken);
 
 module.exports = router;

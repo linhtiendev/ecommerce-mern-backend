@@ -75,7 +75,7 @@ const loginUser = (userLogin) => {
                 id: checkUser.id,
                 isAdmin: checkUser.isAdmin,
             });
-            // cấp lại access_token mới khi access_token hết hạn
+            // cấp lại access_token mới khi access_token cũ hết hạn
             const refresh_token = await genneralRefreshToken({
                 id: checkUser.id,
                 isAdmin: checkUser.isAdmin,
