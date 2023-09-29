@@ -118,9 +118,27 @@ const getDetailProduct = (id) => {
     });
 };
 
+// Hàm check get all product
+const getAllProduct = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Hàm get all product
+            const getAllProducts = await Product.find();
+            resolve({
+                status: "OK",
+                message: "Get all product success",
+                data: getAllProducts,
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 module.exports = {
     createProduct,
     updateProduct,
     deleteProduct,
     getDetailProduct,
+    getAllProduct,
 };
