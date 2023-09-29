@@ -44,6 +44,26 @@ const updateProduct = async (req, res) => {
     }
 };
 
+// Hàm xử lý trước khi xóa product
+const deleteProduct = async (req, res) => {
+    try {
+        // hàm lấy id từ req
+        const productId = req.params.id;
+        if (!productId) {
+            return res.status(200).json({
+                status: "error",
+                message: "Product id is required",
+            });
+        }
+        const response = await ProductService.deleteProduct(productId);
+        return res.status(200).json(response);
+    } catch (e) {
+        return res.status(404).json({
+            message: e,
+        });
+    }
+};
+
 // hàm xử lý get detail product
 const getDetailProduct = async (req, res) => {
     try {
@@ -67,5 +87,6 @@ const getDetailProduct = async (req, res) => {
 module.exports = {
     createProduct,
     updateProduct,
+    deleteProduct,
     getDetailProduct,
 };

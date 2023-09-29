@@ -69,6 +69,31 @@ const updateProduct = (id, data) => {
     });
 };
 
+// Hàm check delete product
+const deleteProduct = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const checkProduct = await Product.findOne({
+                _id: id,
+            });
+            if (checkProduct === null) {
+                resolve({
+                    status: "OK",
+                    message: "Product is not defined",
+                });
+            }
+            // Hàm delete product
+            await Product.findByIdAndDelete(id);
+            resolve({
+                status: "OK",
+                message: "Delete product success",
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
 // Hàm check get detail product
 const getDetailProduct = (id) => {
     return new Promise(async (resolve, reject) => {
@@ -96,5 +121,6 @@ const getDetailProduct = (id) => {
 module.exports = {
     createProduct,
     updateProduct,
+    deleteProduct,
     getDetailProduct,
 };
