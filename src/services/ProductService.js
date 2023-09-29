@@ -119,11 +119,29 @@ const getDetailProduct = (id) => {
 };
 
 // Hàm check get all product
-const getAllProduct = (limit, page, sort) => {
+const getAllProduct = (limit, page, sort, filter) => {
     return new Promise(async (resolve, reject) => {
         try {
             // hàm đếm số lượng product hiển thị
             const totalProduct = await Product.count();
+            // điều kiện để filter product
+            if (filter) {
+                // filter theo name
+                const label = filter[0];
+                const allProductFilter = await Product.find({
+                    [label]: { $regex: filter[1] },
+                })
+                    .limit(limit)
+                    .skip(page * limit);
+                resolve({
+                    status: "OK",
+                    message: "Get all product success",
+                    data: allProductFilter,
+                    totalProduct: totalProduct,
+                    pageCurrent: page + 1,
+                    totalPage: Math.ceil(totalProduct / limit),
+                });
+            }
             // điều kiện để sort product
             if (sort) {
                 const objectSort = {};
@@ -144,10 +162,7 @@ const getAllProduct = (limit, page, sort) => {
             // Hàm get all product
             const getAllProducts = await Product.find()
                 .limit(limit) // số lượng object <=> số lượng sản phẩm
-                .skip(page * limit) // Bỏ qua số lượng object để lấy object tiếp theo
-                .sort({
-                    name: sort,
-                });
+                .skip(page * limit); // Bỏ qua số lượng object để lấy object tiếp theo
             resolve({
                 status: "OK",
                 message: "Get all product success",
