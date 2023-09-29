@@ -119,7 +119,7 @@ const getDetailProduct = (id) => {
 };
 
 // Hàm check get all product
-const getAllProduct = (limit = 8, page = 0) => {
+const getAllProduct = (limit, page) => {
     return new Promise(async (resolve, reject) => {
         try {
             // hàm đếm số lượng product hiển thị
