@@ -119,15 +119,35 @@ const getDetailProduct = (id) => {
 };
 
 // Hàm check get all product
-const getAllProduct = (limit, page) => {
+const getAllProduct = (limit, page, sort) => {
     return new Promise(async (resolve, reject) => {
         try {
             // hàm đếm số lượng product hiển thị
             const totalProduct = await Product.count();
+            // điều kiện để sort product
+            if (sort) {
+                const objectSort = {};
+                objectSort[sort[1]] = sort[0];
+                const allProductSort = await Product.find()
+                    .limit(limit)
+                    .skip(page * limit)
+                    .sort(objectSort);
+                resolve({
+                    status: "OK",
+                    message: "Get all product success",
+                    data: allProductSort,
+                    totalProduct: totalProduct,
+                    pageCurrent: page + 1,
+                    totalPage: Math.ceil(totalProduct / limit),
+                });
+            }
             // Hàm get all product
             const getAllProducts = await Product.find()
                 .limit(limit) // số lượng object <=> số lượng sản phẩm
-                .skip(page * limit); // Bỏ qua số lượng object để lấy object tiếp theo
+                .skip(page * limit) // Bỏ qua số lượng object để lấy object tiếp theo
+                .sort({
+                    name: sort,
+                });
             resolve({
                 status: "OK",
                 message: "Get all product success",

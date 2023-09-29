@@ -88,10 +88,11 @@ const getDetailProduct = async (req, res) => {
 const getAllProduct = async (req, res) => {
     try {
         // lấy 2 tham số từ query
-        const { limit, page } = req.query;
+        const { limit, page, sort } = req.query;
         const response = await ProductService.getAllProduct(
             Number(limit) || 8,
-            Number(page) || 0
+            Number(page) || 0,
+            sort
         );
         return res.status(200).json(response);
     } catch (e) {
