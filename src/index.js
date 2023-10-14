@@ -2,12 +2,15 @@ const express = require("express");
 const dotenv = require("dotenv");
 const { default: mongoose } = require("mongoose");
 const routes = require("./routes");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+// dùng để giải quyết lỗi khi call api
+app.use(cors());
 // dùng để nhận resquest từ client gửi lên
 app.use(bodyParser.json());
 

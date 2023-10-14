@@ -9,19 +9,19 @@ const createUser = async (req, res) => {
         const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         const isCheckEmail = reg.test(email); // boolean
         // check input
-        if (!name || !email || !password || !confirmPassword || !phone) {
+        if (!email || !password || !confirmPassword) {
             return res.status(200).json({
-                status: "error",
+                status: "ERR",
                 message: "Input is required",
             });
         } else if (!isCheckEmail) {
             return res.status(200).json({
-                status: "error",
+                status: "ERR",
                 message: "Input is email",
             });
         } else if (password !== confirmPassword) {
             return res.status(200).json({
-                status: "error",
+                status: "ERR",
                 message: "Input is equal confirmPassword",
             });
         }
@@ -38,12 +38,12 @@ const createUser = async (req, res) => {
 // Hàm đăng nhập
 const loginUser = async (req, res) => {
     try {
-        const { name, email, password, confirmPassword, phone } = req.body;
+        const { email, password } = req.body;
         // check có phải là email hay không
         const reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
         const isCheckEmail = reg.test(email); // boolean
         // check input
-        if (!name || !email || !password || !confirmPassword || !phone) {
+        if (!email || !password) {
             return res.status(200).json({
                 status: "error",
                 message: "Input is required",
@@ -52,11 +52,6 @@ const loginUser = async (req, res) => {
             return res.status(200).json({
                 status: "error",
                 message: "Input is email",
-            });
-        } else if (password !== confirmPassword) {
-            return res.status(200).json({
-                status: "error",
-                message: "Input is equal confirmPassword",
             });
         }
         // nếu k rơi vào case lỗi thì sẽ gọi đến service
