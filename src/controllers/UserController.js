@@ -56,7 +56,14 @@ const loginUser = async (req, res) => {
         }
         // nếu k rơi vào case lỗi thì sẽ gọi đến service
         const response = await UserService.loginUser(req.body);
-        return res.status(200).json(response);
+        // xử lý refesh_token ở client
+        const { refresh_token, ...newResponse } = response;
+        // set refresh_token vào cookie
+        res.cookie("refresh_token", refresh_token, {
+            HttpOnly: true, // giúp chỉ lấy được cookie qua HTTP
+            Secure: true, // thêm bảo mật ở phía client
+        });
+        return res.status(200).json(newResponse);
     } catch (e) {
         return res.status(404).json({
             message: e,
@@ -142,7 +149,7 @@ const getDetailUser = async (req, res) => {
 const refreshToken = async (req, res) => {
     try {
         // hàm lấy token từ headers
-        const token = req.headers.token.split(" ")[1];
+        const token = req.cookies.refresh_token;
         if (!token) {
             return res.status(200).json({
                 status: "error",

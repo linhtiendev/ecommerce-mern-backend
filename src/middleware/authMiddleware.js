@@ -12,10 +12,8 @@ const authMiddleware = (req, res, next) => {
                 status: "ERROR",
             });
         }
-        // nếu có user thì lấy payload trong user
-        const { payload } = user;
         // check payload nếu admin = true
-        if (payload?.isAdmin) {
+        if (user?.isAdmin) {
             // nếu isAdmin = true thì đi tiếp
             next();
         } else {
@@ -38,10 +36,8 @@ const authUserMiddleware = (req, res, next) => {
                 status: "ERROR",
             });
         }
-        // nếu có user thì lấy payload trong user
-        const { payload } = user;
         // check payload
-        if (payload?.isAdmin || payload?.id === userId) {
+        if (user?.isAdmin || user?.id === userId) {
             // nếu isAdmin = true hoặc id payload = id param thì đi tiếp
             next();
         } else {

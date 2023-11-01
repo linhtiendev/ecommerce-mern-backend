@@ -103,7 +103,7 @@ const updateUser = (id, data) => {
             });
             if (checkUser === null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "User is not defined",
                 });
             }
@@ -132,7 +132,7 @@ const deleteUser = (id) => {
             });
             if (checkUser === null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "User is not defined",
                 });
             }
@@ -174,7 +174,7 @@ const getDetailUser = (id) => {
             });
             if (user === null) {
                 resolve({
-                    status: "OK",
+                    status: "ERR",
                     message: "User is not defined",
                 });
             }
